@@ -1,5 +1,8 @@
 from tkinter import *
 from functionwindow import Navegador
+import os
+
+caminho = os.getcwd()
 
 driver = Navegador()
 
@@ -19,12 +22,12 @@ class EnvioDeWhatsapp:
             relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        self.background_img = PhotoImage(file = f"background.png")
+        self.background_img = PhotoImage(file=r'background.png')
         self.background = self.canvas.create_image(
             394.5, 228.0,
             image=self.background_img)
 
-        self.entry0_img = PhotoImage(file = f"img_textBox0.png")
+        self.entry0_img = PhotoImage(file = r'img_textBox0.png')
         self.entry0_bg = self.canvas.create_image(
             550.5, 287.5,
             image = self.entry0_img)
@@ -38,7 +41,7 @@ class EnvioDeWhatsapp:
             width = 255,
             height = 115)
 
-        self.entry1_img = PhotoImage(file = f"img_textBox1.png")
+        self.entry1_img = PhotoImage(file = r"img_textBox1.png")
         self.entry1_bg = self.canvas.create_image(
             544.5, 158.0,
             image = self.entry1_img)
@@ -52,7 +55,7 @@ class EnvioDeWhatsapp:
             width = 183,
             height = 26)
 
-        self.img0 = PhotoImage(file = f"img0.png")
+        self.img0 = PhotoImage(file =r"img0.png")
         self.botao_enviar = Button(
             text='Enviar',
             bg='#ACFFB9',

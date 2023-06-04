@@ -19,11 +19,11 @@ class Navegador:
         driver.get(f'https://web.whatsapp.com/')
 
         # esperar gerar qrcode
-        while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[3]/div[1]/div/div/div[2]/div/canvas')) < 1:
+        while len(driver.find_elements(By.XPATH, '//*[@id="pictures"]/div/div/div[3]/div[1]/div/div/div[2]/div/canvas')) < 1:
             time.sleep(1)
 
         # esperar carregar whats
-        while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[5]/div/div/div[2]/div[1]/h1')) < 1:
+        while len(driver.find_elements(By.XPATH, '//*[@id="pictures"]/div/div/div[5]/div/div/div[2]/div[1]/h1')) < 1:
             time.sleep(1)
         time.sleep(7)
         print('WhatsApp logado e carregado com sucesso!\nProxima etapa...')
