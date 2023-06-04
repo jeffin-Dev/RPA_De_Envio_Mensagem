@@ -16,9 +16,7 @@ class Navegador:
         servico = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=servico)
         texto = urllib.parse.quote(mensagem)
-
         driver.get(f'https://web.whatsapp.com/')
-        # time.sleep(30)
 
         # esperar gerar qrcode
         while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[3]/div[1]/div/div/div[2]/div/canvas')) < 1:
@@ -28,7 +26,7 @@ class Navegador:
         while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[5]/div/div/div[2]/div[1]/h1')) < 1:
             time.sleep(1)
         time.sleep(7)
-        print('WhatsApp logado e carregado com sucesso!\nProxima etapa..')
+        print('WhatsApp logado e carregado com sucesso!\nProxima etapa...')
 
         # numeros = ['31973093105','31985704347', '31989015177']
         # for numero in numeros:
