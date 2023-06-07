@@ -28,7 +28,7 @@ class Navegador:
         time.sleep(7)
         print('WhatsApp logado e carregado com sucesso!\nProxima etapa...')
 
-        # numeros = ['31973093105','31985704347', '31989015177']
+        # numeros = ['']
         # for numero in numeros:
             # print (numero)
 
