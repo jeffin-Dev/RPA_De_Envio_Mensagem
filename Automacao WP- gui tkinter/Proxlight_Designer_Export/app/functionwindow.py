@@ -62,6 +62,8 @@ class Navegador:
         print('mensagem enviada')
         time.sleep(5)
 
+
+
 if '__main__' == __name__:
 
     a= Navegador()
