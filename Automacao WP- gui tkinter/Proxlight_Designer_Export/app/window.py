@@ -1,18 +1,18 @@
 from tkinter import *
 from tkinter import ttk
 from functionwindow import Navegador
-from options import Opcoes
-
+from tkinter import messagebox
+from datails import Details
 
 driver = Navegador()
-opcao = Opcoes()
-
+detalhes = Details()
 
 class EnvioDeWhatsapp():
     def __init__(self):
         self.window = Tk()
         self.window.geometry("720x439")
         self.window.configure(bg = "#b3f0d3")
+        detalhes.fixar_window_centro(self.window)
         self.canvas = Canvas(
             self.window,
             bg = "#b3f0d3",
@@ -28,14 +28,17 @@ class EnvioDeWhatsapp():
             361.5, 219.5,
             image=self.background_img)
 
+
         self.opcoes= ['Contato(s)', 'Upload de planilha']
 
 
         # Criando combobox opcoes
-        self.combobox_opcoes = StringVar()
-        self.combobox_opcoes = ttk.Combobox(values=self.opcoes, textvariable = self.combobox_opcoes, state="readonly", width=20)
-        opcao.opcao_escolhida(self.combobox_opcoes.get())
-        self.combobox_opcoes.place(x= 465, y = 100)
+
+        self.combobox_var = StringVar()
+        self.combobox_opcoes = ttk.Combobox(values=self.opcoes, textvariable=self.combobox_var,
+                                            state="readonly", width=20)
+        self.combobox_opcoes.place(x=465, y=100)
+        self.valor_combobox(self.combobox_var)
 
 
         # Caixa de text mensagem
@@ -55,10 +58,10 @@ class EnvioDeWhatsapp():
         # Botao "Enviar'
         self.img_botao = PhotoImage(file = f"img0.png")
         self.botao_enviar = Button(
+            # command= driver.cliquei_no_link()
             image = self.img_botao,
             borderwidth = 5,
             highlightthickness = 2,
-            command = self.cliquei,
             bg= '#62D975',
             relief = "flat")
         self.botao_enviar.place(
@@ -66,12 +69,44 @@ class EnvioDeWhatsapp():
             width = 116,
             height = 37)
 
+
+        self.botao_fechar = Button(text='Fechar', bg= "#62D975", width=6, anchor='n',
+                                   command=self.fechar_aplicacao)
+        self.botao_fechar.place(x=657, y=407)
+
         self.window.resizable(False, False)
         self.window.mainloop()
 
 
-    def cliquei(self):
-        print (self.combobox_opcoes.get())
+    def valor_combobox(self, *args):
+        self.combobox_var.trace('w', self.valor_combobox)
+        if 'Contato(s)' in self.combobox_opcoes.get():
+            inf_contatos = Label(text='Escreva o(s) número(os) abaixo.', bg='#B3F0D3', fg='black',
+                                 font='-weight bold -size 9')
+            inf_contatos.place(x=445,
+                               y=127)
+            numero_s = Text(height=1,
+                            width=20)
+            numero_s.place(x=455,
+                            y=150)
+            separador_labol = Label(text='Separe-os com VÍRGULA',
+                                    bg='#A4FFC8', fg='black', font='-weight bold -size 9')
+            separador_labol.place(x=460, y=175)
+
+        elif 'Upload de planilha' in self.combobox_opcoes.get():
+            separador_labol = Label(text='fazer',
+                                    bg='#A4FFC8', fg='black', font='-weight bold -size 9')
+            separador_labol.place(x=460, y=175)
+
+    def fechar_aplicacao(self):
+        mensagem = messagebox.askquestion(title='Encerrando sistema', message='Deseja realmente sair?')
+        if 'no' in mensagem:
+            pass
+        else:
+            self.window.destroy()
+
+
+
 
 if "__main__" == __name__:
 
