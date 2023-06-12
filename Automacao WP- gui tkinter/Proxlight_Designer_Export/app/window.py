@@ -1,11 +1,14 @@
 from tkinter import *
 from tkinter import ttk
-from functionwindow import Navegador
+from functiondriver import Navegador
 from tkinter import messagebox
 from datails import Details
+from tkinter.filedialog import askopenfilename
+from readsheets import LendoPlanilha
 
 driver = Navegador()
 detalhes = Details()
+
 
 class EnvioDeWhatsapp():
     def __init__(self):
@@ -31,15 +34,13 @@ class EnvioDeWhatsapp():
 
         self.opcoes= ['Contato(s)', 'Upload de planilha']
 
-
         # Criando combobox opcoes
-
         self.combobox_var = StringVar()
         self.combobox_opcoes = ttk.Combobox(values=self.opcoes, textvariable=self.combobox_var,
                                             state="readonly", width=20)
         self.combobox_opcoes.place(x=465, y=100)
-        self.valor_combobox(self.combobox_var)
-
+        self.contato_s(self.combobox_var)
+        self.upload_contato()
 
         # Caixa de text mensagem
         self.img_caixa_texto = PhotoImage(file = f"img_textBox0.png")
@@ -58,7 +59,6 @@ class EnvioDeWhatsapp():
         # Botao "Enviar'
         self.img_botao = PhotoImage(file = f"img0.png")
         self.botao_enviar = Button(
-            # command= driver.cliquei_no_link()
             image = self.img_botao,
             borderwidth = 5,
             highlightthickness = 2,
@@ -78,25 +78,61 @@ class EnvioDeWhatsapp():
         self.window.mainloop()
 
 
-    def valor_combobox(self, *args):
-        self.combobox_var.trace('w', self.valor_combobox)
+    def contato_s(self, *args):
+
+        lista_de_numeros = []
+        self.combobox_var.trace('w', self.contato_s)
+
         if 'Contato(s)' in self.combobox_opcoes.get():
-            inf_contatos = Label(text='Escreva o(s) número(os) abaixo.', bg='#B3F0D3', fg='black',
+            self.limpar_opcoes()
+            label_numeros = Label(text='Escreva o(s) número(os) abaixo.', bg='#B3F0D3', fg='black',
                                  font='-weight bold -size 9')
-            inf_contatos.place(x=445,
+            label_numeros.place(x=445,
                                y=127)
+
             numero_s = Text(height=1,
                             width=20)
             numero_s.place(x=455,
                             y=150)
-            separador_labol = Label(text='Separe-os com VÍRGULA',
-                                    bg='#A4FFC8', fg='black', font='-weight bold -size 9')
-            separador_labol.place(x=460, y=175)
 
-        elif 'Upload de planilha' in self.combobox_opcoes.get():
-            separador_labol = Label(text='fazer',
+            lista_de_numeros.append(numero_s.get('1.0'))
+
+            separador_labol = Label(text='Separe-os com VÍRGULA', width=35, anchor='w',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 9')
             separador_labol.place(x=460, y=175)
+            return print (lista_de_numeros)
+
+
+
+    def limpar_opcoes(self):
+        label_limpar = Label(text='', height=7, width=40, bg='#A4FFC8')
+        label_limpar.place(x=360,
+                            y=127)
+
+    def upload_contato(self, *args):
+        self.limpar_opcoes()
+        self.combobox_var.trace('w', self.upload_contato)
+        if 'Upload de planilha' in self.combobox_opcoes.get():
+            arquivo = Label(text='Nenhum arquivo selecionado.',
+                                    bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+            arquivo.place(x=365, y=175)
+            butao_upload= Button(text='Carregar Planilha',
+                                    bg='#62D975', fg='black', font='-weight bold -size 9', command= self.selecionar_arquivo)
+            butao_upload.place(x=480,
+                               y=132)
+
+    def selecionar_arquivo(self):
+        arquivo = askopenfilename(title='Selecionar planilha')
+        if arquivo:
+            arquivo_selecionado = Label(text=arquivo,
+                                 bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+            arquivo_selecionado.place(x=365, y=175)
+            df = LendoPlanilha(arquivo)
+        else:
+            label_arquivo_n_selecionado = Label(text='Nenhum arquivo selecionado', width=50, anchor='w',
+                                 bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+            label_arquivo_n_selecionado.place(x=365, y=175)
+
 
     def fechar_aplicacao(self):
         mensagem = messagebox.askquestion(title='Encerrando sistema', message='Deseja realmente sair?')
