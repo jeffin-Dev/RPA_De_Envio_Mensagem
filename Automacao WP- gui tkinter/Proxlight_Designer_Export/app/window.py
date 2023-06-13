@@ -8,6 +8,7 @@ from readsheets import LendoPlanilha
 
 driver = Navegador()
 detalhes = Details()
+df = LendoPlanilha()
 
 
 class EnvioDeWhatsapp():
@@ -56,10 +57,15 @@ class EnvioDeWhatsapp():
             width = 251,
             height = 111)
 
+        self.numeros = []
+        self.numeros.append(self.contato_s)
+
+
         # Botao "Enviar'
         self.img_botao = PhotoImage(file = f"img0.png")
         self.botao_enviar = Button(
             image = self.img_botao,
+            # command= print (self.mensagem_para_enviar.get('1.0', END)),
             borderwidth = 5,
             highlightthickness = 2,
             bg= '#62D975',
@@ -74,34 +80,39 @@ class EnvioDeWhatsapp():
                                    command=self.fechar_aplicacao)
         self.botao_fechar.place(x=657, y=407)
 
+        self.botao = Button(text='Clique', command=self.cliquei)
+        self.botao.place(x=50,
+                y= 50)
+
         self.window.resizable(False, False)
         self.window.mainloop()
 
 
-    def contato_s(self, *args):
-
+    def contato_s(self,*args):
         lista_de_numeros = []
         self.combobox_var.trace('w', self.contato_s)
-
         if 'Contato(s)' in self.combobox_opcoes.get():
+
             self.limpar_opcoes()
+
             label_numeros = Label(text='Escreva o(s) número(os) abaixo.', bg='#B3F0D3', fg='black',
                                  font='-weight bold -size 9')
             label_numeros.place(x=445,
                                y=127)
 
-            numero_s = Text(height=1,
-                            width=20)
-            numero_s.place(x=455,
-                            y=150)
 
-            lista_de_numeros.append(numero_s.get('1.0'))
+            numero_str = StringVar()
+            numero_s_para_enviar = Entry(bd = 0, textvariable= numero_str,
+            bg = "#ffffff",
+            highlightthickness = 0)
+
+            numero_s_para_enviar.place(x=450, y=150,
+                           width=185,
+                           height=25)
 
             separador_labol = Label(text='Separe-os com VÍRGULA', width=35, anchor='w',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 9')
             separador_labol.place(x=460, y=175)
-            return print (lista_de_numeros)
-
 
 
     def limpar_opcoes(self):
@@ -125,13 +136,19 @@ class EnvioDeWhatsapp():
         arquivo = askopenfilename(title='Selecionar planilha')
         if arquivo:
             arquivo_selecionado = Label(text=arquivo,
-                                 bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+                                 bg='#A4FFC8', fg='black', font='-weight bold -size 8')
             arquivo_selecionado.place(x=365, y=175)
-            df = LendoPlanilha(arquivo)
+
+            mostrar_numeros = Label(text=f'{df.ler_planilha(arquivo)}', bg='#A4FFC8', fg = 'black',
+                                    font='-weight bold -size 9')
+            mostrar_numeros.place(x=90,
+                                  y=170)
+
         else:
             label_arquivo_n_selecionado = Label(text='Nenhum arquivo selecionado', width=50, anchor='w',
                                  bg='#A4FFC8', fg='black', font='-weight bold -size 7')
             label_arquivo_n_selecionado.place(x=365, y=175)
+
 
 
     def fechar_aplicacao(self):
