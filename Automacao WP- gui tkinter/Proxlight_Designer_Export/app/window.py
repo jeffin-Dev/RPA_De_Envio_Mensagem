@@ -17,6 +17,9 @@ class EnvioDeWhatsapp():
         self.window.geometry("720x439")
         self.window.configure(bg = "#b3f0d3")
         detalhes.fixar_window_centro(self.window)
+        self.numeros = []
+
+
         self.canvas = Canvas(
             self.window,
             bg = "#b3f0d3",
@@ -33,15 +36,15 @@ class EnvioDeWhatsapp():
             image=self.background_img)
 
 
-        self.opcoes= ['Contato(s)', 'Upload de planilha']
-
+        self.opcoes= ['Contato(s)','Upload de planilha']
         # Criando combobox opcoes
         self.combobox_var = StringVar()
         self.combobox_opcoes = ttk.Combobox(values=self.opcoes, textvariable=self.combobox_var,
                                             state="readonly", width=20)
         self.combobox_opcoes.place(x=465, y=100)
-        self.contato_s(self.combobox_var)
-        self.upload_contato()
+        self.valores_combobox()
+
+
 
         # Caixa de text mensagem
         self.img_caixa_texto = PhotoImage(file = f"img_textBox0.png")
@@ -57,15 +60,10 @@ class EnvioDeWhatsapp():
             width = 251,
             height = 111)
 
-        self.numeros = []
-        self.numeros.append(self.contato_s)
-
-
         # Botao "Enviar'
         self.img_botao = PhotoImage(file = f"img0.png")
         self.botao_enviar = Button(
             image = self.img_botao,
-            # command= print (self.mensagem_para_enviar.get('1.0', END)),
             borderwidth = 5,
             highlightthickness = 2,
             bg= '#62D975',
@@ -76,54 +74,37 @@ class EnvioDeWhatsapp():
             height = 37)
 
 
-        self.botao_fechar = Button(text='Fechar', bg= "#62D975", width=6, anchor='n',
+        self.botao_fechar = Button(text='valor', bg= "#62D975", width=6, anchor='n',
                                    command=self.fechar_aplicacao)
         self.botao_fechar.place(x=657, y=407)
-
-        self.botao = Button(text='Clique', command=self.cliquei)
-        self.botao.place(x=50,
-                y= 50)
 
         self.window.resizable(False, False)
         self.window.mainloop()
 
-
-    def contato_s(self,*args):
-        lista_de_numeros = []
-        self.combobox_var.trace('w', self.contato_s)
+    def valores_combobox(self, *args):
+        self.combobox_var.trace('w', self.valores_combobox)
         if 'Contato(s)' in self.combobox_opcoes.get():
-
             self.limpar_opcoes()
-
-            label_numeros = Label(text='Escreva o(s) número(os) abaixo.', bg='#B3F0D3', fg='black',
+            label_numeros = Label(text='Escreva o(s) número(os) abaixo.', bg='#A4FFC8', fg='black',
                                  font='-weight bold -size 9')
             label_numeros.place(x=445,
-                               y=127)
+                                y=127)
 
+            self.entrada_numero = Text(height=1, width=20)
+            self.entrada_numero.place(x=445, y=148)
 
-            numero_str = StringVar()
-            numero_s_para_enviar = Entry(bd = 0, textvariable= numero_str,
-            bg = "#ffffff",
-            highlightthickness = 0)
-
-            numero_s_para_enviar.place(x=450, y=150,
-                           width=185,
-                           height=25)
+            butao_numeros = Button(text='Carregar Numeros(s)',
+                                  bg='#62D975',fg='black', font='-weight bold -size 9', command=self.numeros_carregados)
+            butao_numeros.place(x=460,
+                               y=200)
 
             separador_labol = Label(text='Separe-os com VÍRGULA', width=35, anchor='w',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 9')
             separador_labol.place(x=460, y=175)
 
 
-    def limpar_opcoes(self):
-        label_limpar = Label(text='', height=7, width=40, bg='#A4FFC8')
-        label_limpar.place(x=360,
-                            y=127)
-
-    def upload_contato(self, *args):
-        self.limpar_opcoes()
-        self.combobox_var.trace('w', self.upload_contato)
-        if 'Upload de planilha' in self.combobox_opcoes.get():
+        elif 'Upload de planilha' in self.combobox_opcoes.get():
+            self.limpar_opcoes()
             arquivo = Label(text='Nenhum arquivo selecionado.',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 7')
             arquivo.place(x=365, y=175)
@@ -131,6 +112,24 @@ class EnvioDeWhatsapp():
                                     bg='#62D975', fg='black', font='-weight bold -size 9', command= self.selecionar_arquivo)
             butao_upload.place(x=480,
                                y=132)
+
+
+    def numeros_carregados(self):
+        numeros_cru = self.entrada_numero.get('1.0', END).strip(' ')
+        numeros_list = numeros_cru.split(',')
+        for numeros in numeros_list:
+            numeros = numeros.strip()
+            self.numeros.append(numeros)
+        print (self.numeros)
+        mensagem_n_carregador = messagebox.showinfo(title='CARREGANDO NÚMEROS', message='Os números foram carregados com sucesso!')
+        numeros_label = Label(text='Os numeros carregados são: {}'.format(self.numeros))
+        numeros_label.place(x=10,
+                            y=10)
+    def limpar_opcoes(self):
+        label_limpar = Label(height=7, width=40, bg='#A4FFC8')
+        label_limpar.place(x=360,
+                            y=127)
+
 
     def selecionar_arquivo(self):
         arquivo = askopenfilename(title='Selecionar planilha')
