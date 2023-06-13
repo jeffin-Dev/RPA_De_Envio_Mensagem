@@ -5,6 +5,8 @@ from tkinter import messagebox
 from datails import Details
 from tkinter.filedialog import askopenfilename
 from readsheets import LendoPlanilha
+from tkinter.simpledialog import askstring
+
 
 driver = Navegador()
 detalhes = Details()
@@ -18,7 +20,6 @@ class EnvioDeWhatsapp():
         self.window.configure(bg = "#b3f0d3")
         detalhes.fixar_window_centro(self.window)
         self.numeros = []
-
 
         self.canvas = Canvas(
             self.window,
@@ -35,7 +36,6 @@ class EnvioDeWhatsapp():
             361.5, 219.5,
             image=self.background_img)
 
-
         self.opcoes= ['Contato(s)','Upload de planilha']
         # Criando combobox opcoes
         self.combobox_var = StringVar()
@@ -43,8 +43,6 @@ class EnvioDeWhatsapp():
                                             state="readonly", width=20)
         self.combobox_opcoes.place(x=465, y=100)
         self.valores_combobox()
-
-
 
         # Caixa de text mensagem
         self.img_caixa_texto = PhotoImage(file = f"img_textBox0.png")
@@ -64,6 +62,7 @@ class EnvioDeWhatsapp():
         self.img_botao = PhotoImage(file = f"img0.png")
         self.botao_enviar = Button(
             image = self.img_botao,
+            command= self.enviar_mensagem,
             borderwidth = 5,
             highlightthickness = 2,
             bg= '#62D975',
@@ -73,13 +72,16 @@ class EnvioDeWhatsapp():
             width = 116,
             height = 37)
 
-
-        self.botao_fechar = Button(text='valor', bg= "#62D975", width=6, anchor='n',
+        self.botao_fechar = Button(text='Encerrar', bg= "#62D975", width=6, anchor='n',
                                    command=self.fechar_aplicacao)
         self.botao_fechar.place(x=657, y=407)
 
         self.window.resizable(False, False)
         self.window.mainloop()
+
+    def enviar_mensagem(self):
+        driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
+        self.numeros.clear()
 
     def valores_combobox(self, *args):
         self.combobox_var.trace('w', self.valores_combobox)
@@ -88,21 +90,19 @@ class EnvioDeWhatsapp():
             label_numeros = Label(text='Escreva o(s) número(os) abaixo.', bg='#A4FFC8', fg='black',
                                  font='-weight bold -size 9')
             label_numeros.place(x=445,
-                                y=127)
+                                y=122)
 
-            self.entrada_numero = Text(height=1, width=20)
-            self.entrada_numero.place(x=445, y=148)
+            self.entrada_numero = Text(height=1, width=35)
+            self.entrada_numero.place(x=380, y=148)
 
             butao_numeros = Button(text='Carregar Numeros(s)',
-                                  bg='#62D975',fg='black', font='-weight bold -size 9', command=self.numeros_carregados)
+                                  bg='#62D975',fg='black', font='-weight bold -size 9', command=self.carregar_numeros)
             butao_numeros.place(x=460,
-                               y=200)
+                               y=195)
 
             separador_labol = Label(text='Separe-os com VÍRGULA', width=35, anchor='w',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 9')
-            separador_labol.place(x=460, y=175)
-
-
+            separador_labol.place(x=460, y=170)
         elif 'Upload de planilha' in self.combobox_opcoes.get():
             self.limpar_opcoes()
             arquivo = Label(text='Nenhum arquivo selecionado.',
@@ -113,42 +113,51 @@ class EnvioDeWhatsapp():
             butao_upload.place(x=480,
                                y=132)
 
-
-    def numeros_carregados(self):
-        numeros_cru = self.entrada_numero.get('1.0', END).strip(' ')
-        numeros_list = numeros_cru.split(',')
-        for numeros in numeros_list:
-            numeros = numeros.strip()
-            self.numeros.append(numeros)
-        print (self.numeros)
-        mensagem_n_carregador = messagebox.showinfo(title='CARREGANDO NÚMEROS', message='Os números foram carregados com sucesso!')
-        numeros_label = Label(text='Os numeros carregados são: {}'.format(self.numeros))
-        numeros_label.place(x=10,
+    def carregar_numeros(self):
+        self.numeros_label = Label(text='',bg='#B3F0E5',
+                                      font='-weight bold -size 8')
+        self.numeros_label.place(x=30,
                             y=10)
+        if '9' in self.entrada_numero.get('1.0', END):
+            numeros_cru = self.entrada_numero.get('1.0', END).strip(' ')
+            numeros_list = numeros_cru.split(',')
+            qtd = 3
+            mensagem_n_carregador = messagebox.showinfo(title='CARREGANDO NÚMEROS',
+                                                        message='Os números foram carregados com sucesso!')
+            for numeros in numeros_list:
+                numeros = numeros.strip()
+                self.numeros.append(numeros)
+                self.numeros_label['text'] ='Os numeros carregados são:\n{}Escreva sua mensagem no campo "Mensagem" e envie.'.format(numeros_cru.replace(',','\n'))
+                # self.numeros_label.place(x=30,
+                #                     y=10)
+        else:
+            alerta = messagebox.showinfo(title='Nenhum número encontrado', message='Digite algum número')
+
     def limpar_opcoes(self):
-        label_limpar = Label(height=7, width=40, bg='#A4FFC8')
+        label_limpar = Label(height=7, width=45, bg='#A4FFC8')
         label_limpar.place(x=360,
                             y=127)
 
-
     def selecionar_arquivo(self):
         arquivo = askopenfilename(title='Selecionar planilha')
-        if arquivo:
-            arquivo_selecionado = Label(text=arquivo,
-                                 bg='#A4FFC8', fg='black', font='-weight bold -size 8')
-            arquivo_selecionado.place(x=365, y=175)
-
-            mostrar_numeros = Label(text=f'{df.ler_planilha(arquivo)}', bg='#A4FFC8', fg = 'black',
-                                    font='-weight bold -size 9')
-            mostrar_numeros.place(x=90,
-                                  y=170)
-
+        coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?\n'
+                                     'É de extrema importância que o nome esteja correto.')
+        if coluna:
+            if arquivo:
+                arquivo_selecionado = Label(text=arquivo,
+                                     bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+                arquivo_selecionado.place(x=365, y=175)
+                messagebox.showinfo(title='Carregando planilha', message=f'Coluna: {coluna}.\nA planilha foi carregada com sucesso!!\nEscreva sua'
+                                                                         ' mensagem no campo "Mensagem" e clique em "Enviar"')
+                self.numeros = df.ler_planilha(arquivo, coluna)
+                print(self.numeros)
         else:
             label_arquivo_n_selecionado = Label(text='Nenhum arquivo selecionado', width=50, anchor='w',
                                  bg='#A4FFC8', fg='black', font='-weight bold -size 7')
             label_arquivo_n_selecionado.place(x=365, y=175)
-
-
+            label_inf = Label(text='', bg='#A4FFC8',
+                              fg='black', font='-weight bold -size 7', anchor='w', width=55)
+            label_inf.place(x=365, y=200)
 
     def fechar_aplicacao(self):
         mensagem = messagebox.askquestion(title='Encerrando sistema', message='Deseja realmente sair?')
@@ -156,9 +165,6 @@ class EnvioDeWhatsapp():
             pass
         else:
             self.window.destroy()
-
-
-
 
 if "__main__" == __name__:
 
