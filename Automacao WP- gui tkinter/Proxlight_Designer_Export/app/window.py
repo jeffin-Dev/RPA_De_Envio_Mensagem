@@ -17,6 +17,7 @@ class EnvioDeWhatsapp():
     def __init__(self):
         self.window = Tk()
         self.window.geometry("720x439")
+        self.window.title('Robô do ZAP')
         self.window.configure(bg = "#b3f0d3")
         detalhes.fixar_window_centro(self.window)
         self.numeros = []
@@ -70,8 +71,7 @@ class EnvioDeWhatsapp():
                                    command=self.fechar_aplicacao)
         self.botao_fechar.place(x=657, y=407)
         self.papelpreto = Label(text='',bg='black', height=14,width=36)
-        self.papelpreto.place(x= 58, y= 56)
-
+        self.papelpreto.place(x= 53, y= 56)
         self.texto_aviso = Label(text='''RECADOS IMPORTANTES
 --------------------------------------------------------------
 O Whatsaap tem api própia, esse sistema foi
@@ -80,7 +80,7 @@ para meios didádicos e para estudos.
 Não envie +50 mensagens por dia. 
 Use por sua conta e risco.
 
-Sistema feito por Jefferson.
+Sistema feito por Jefferson Roberto.
 Todos os direitos reservados.
 jefferson.dev.contato@gmail.com
 --------------------------------------------------------------
@@ -88,8 +88,7 @@ Para saber como usar, acesse o documento
 chamado "Como me usar"\n
 ↳----------------------------------------------------------↲''', bg='#B3F0E5',
                                  fg='black', font='-weight bold -size 8',)
-        self.texto_aviso.place(x=60, y=58)
-
+        self.texto_aviso.place(x=55, y=58)
         self.window.resizable(False, False)
         self.window.mainloop()
 
@@ -106,17 +105,15 @@ chamado "Como me usar"\n
                                  font='-weight bold -size 9')
             label_numeros.place(x=445,
                                 y=122)
-            self.entrada_numero = Text(height=1, width=35)
-            self.entrada_numero.place(x=380, y=148)
-
+            self.entrada_numero = Text(height=1, width=29)
+            self.entrada_numero.place(x=420, y=148)
             butao_numeros = Button(text='Carregar Numeros(s)',
                                   bg='#62D975',fg='black', font='-weight bold -size 9', command=self.carregar_numeros)
-            butao_numeros.place(x=460,
+            butao_numeros.place(x=472,
                                y=195)
-
-            separador_labol = Label(text='Separe-os com VÍRGULA', width=35, anchor='w',
+            separador_labol = Label(text='Separe-os com VÍRGULA', width=30, anchor='w',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 9')
-            separador_labol.place(x=460, y=170)
+            separador_labol.place(x=465, y=170)
         elif 'Upload de planilha' in self.combobox_opcoes.get():
             self.limpar_opcoes()
             arquivo = Label(text='Nenhum arquivo selecionado.',
@@ -124,13 +121,13 @@ chamado "Como me usar"\n
             arquivo.place(x=365, y=175)
             butao_upload= Button(text='Carregar Planilha',
                                     bg='#62D975', fg='black', font='-weight bold -size 9', command= self.selecionar_arquivo)
-            butao_upload.place(x=480,
+            butao_upload.place(x=486,
                                y=132)
 
     def carregar_numeros(self):
         self.numeros_label = Label(text='',bg='#B3F0E5',
                                       font='-weight bold -size 8')
-        self.numeros_label.place(x=30,
+        self.numeros_label.place(x=32,
                             y=10)
         if '9' in self.entrada_numero.get('1.0', END):
             numeros_cru = self.entrada_numero.get('1.0', END).strip(' ')
