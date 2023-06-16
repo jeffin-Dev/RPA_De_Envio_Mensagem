@@ -20,7 +20,6 @@ class EnvioDeWhatsapp():
         self.window.configure(bg = "#b3f0d3")
         detalhes.fixar_window_centro(self.window)
         self.numeros = []
-
         self.canvas = Canvas(
             self.window,
             bg = "#b3f0d3",
@@ -30,12 +29,10 @@ class EnvioDeWhatsapp():
             highlightthickness = 0,
             relief = "ridge")
         self.canvas.place(x = 0, y = 0)
-
         self.background_img = PhotoImage(file = f"background.png")
         self.background = self.canvas.create_image(
             361.5, 219.5,
             image=self.background_img)
-
         self.opcoes= ['Contato(s)','Upload de planilha']
         # Criando combobox opcoes
         self.combobox_var = StringVar()
@@ -43,7 +40,6 @@ class EnvioDeWhatsapp():
                                             state="readonly", width=20)
         self.combobox_opcoes.place(x=465, y=100)
         self.valores_combobox()
-
         # Caixa de text mensagem
         self.img_caixa_texto = PhotoImage(file = f"img_textBox0.png")
         self.img_caixa_texto = self.canvas.create_image(
@@ -57,7 +53,6 @@ class EnvioDeWhatsapp():
             x = 416, y = 254,
             width = 251,
             height = 111)
-
         # Botao "Enviar'
         self.img_botao = PhotoImage(file = f"img0.png")
         self.botao_enviar = Button(
@@ -71,16 +66,36 @@ class EnvioDeWhatsapp():
             x = 484, y = 382,
             width = 116,
             height = 37)
-
         self.botao_fechar = Button(text='Encerrar', bg= "#62D975", width=6, anchor='n',
                                    command=self.fechar_aplicacao)
         self.botao_fechar.place(x=657, y=407)
+        self.papelpreto = Label(text='',bg='black', height=14,width=36)
+        self.papelpreto.place(x= 58, y= 56)
+
+        self.texto_aviso = Label(text='''RECADOS IMPORTANTES
+--------------------------------------------------------------
+O Whatsaap tem api própia, esse sistema foi
+feito
+para meios didádicos e para estudos.
+Não envie +50 mensagens por dia. 
+Use por sua conta e risco.
+
+Sistema feito por Jefferson.
+Todos os direitos reservados.
+jefferson.dev.contato@gmail.com
+--------------------------------------------------------------
+Para saber como usar, acesse o documento
+chamado "Como me usar"\n
+↳----------------------------------------------------------↲''', bg='#B3F0E5',
+                                 fg='black', font='-weight bold -size 8',)
+        self.texto_aviso.place(x=60, y=58)
 
         self.window.resizable(False, False)
         self.window.mainloop()
 
     def enviar_mensagem(self):
         driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
+        df.salvar_planilha(self.numeros, driver.pegar_situacao())
         self.numeros.clear()
 
     def valores_combobox(self, *args):
@@ -91,7 +106,6 @@ class EnvioDeWhatsapp():
                                  font='-weight bold -size 9')
             label_numeros.place(x=445,
                                 y=122)
-
             self.entrada_numero = Text(height=1, width=35)
             self.entrada_numero.place(x=380, y=148)
 
@@ -123,15 +137,12 @@ class EnvioDeWhatsapp():
             numeros_list = numeros_cru.split(',')
             qtd = 3
             mensagem_n_carregador = messagebox.showinfo(title='CARREGANDO NÚMEROS',
-                                                        message='Os números foram carregados com sucesso!')
+                                                        message='Os números foram carregados com sucesso!\nEscreva a mensagem e envie.')
             for numeros in numeros_list:
                 numeros = numeros.strip()
                 self.numeros.append(numeros)
-                self.numeros_label['text'] ='Os numeros carregados são:\n{}Escreva sua mensagem no campo "Mensagem" e envie.'.format(numeros_cru.replace(',','\n'))
-                # self.numeros_label.place(x=30,
-                #                     y=10)
         else:
-            alerta = messagebox.showinfo(title='Nenhum número encontrado', message='Digite algum número')
+            alerta = messagebox.showerror(title='Nenhum número encontrado', message='Digite algum número')
 
     def limpar_opcoes(self):
         label_limpar = Label(height=7, width=45, bg='#A4FFC8')
@@ -140,10 +151,11 @@ class EnvioDeWhatsapp():
 
     def selecionar_arquivo(self):
         arquivo = askopenfilename(title='Selecionar planilha')
-        coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?\n'
-                                     'É de extrema importância que o nome esteja correto.')
-        if coluna:
-            if arquivo:
+
+        if arquivo:
+            coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?\n'
+                                         'É de extrema importância que o nome esteja correto.')
+            if coluna:
                 arquivo_selecionado = Label(text=arquivo,
                                      bg='#A4FFC8', fg='black', font='-weight bold -size 7')
                 arquivo_selecionado.place(x=365, y=175)
@@ -151,6 +163,8 @@ class EnvioDeWhatsapp():
                                                                          ' mensagem no campo "Mensagem" e clique em "Enviar"')
                 self.numeros = df.ler_planilha(arquivo, coluna)
                 print(self.numeros)
+            else:
+                messagebox.showerror(title='ERRO DE COLUNA', message='Nenhuma coluna selecionada.')
         else:
             label_arquivo_n_selecionado = Label(text='Nenhum arquivo selecionado', width=50, anchor='w',
                                  bg='#A4FFC8', fg='black', font='-weight bold -size 7')
@@ -165,6 +179,7 @@ class EnvioDeWhatsapp():
             pass
         else:
             self.window.destroy()
+
 
 if "__main__" == __name__:
 
