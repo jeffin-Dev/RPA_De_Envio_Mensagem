@@ -15,5 +15,5 @@ class LendoPlanilha:
         novo_df = pd.DataFrame()
         novo_df['Numeros'] = numeros
         novo_df['Situação'] = situacao
-        novo_df.to_excel(r'C:\Users\jeffe\Desktop\teste rpa zap\Números enviados.xlsx', index=False)
+        novo_df.to_excel(r'C:\Users\dakma\OneDrive\Área de Trabalho\rpa zap\Números enviados.xlsx', index=False)
 
