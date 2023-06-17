@@ -44,33 +44,42 @@ class Navegador:
             # abrir whats web
             while len(driver.find_elements(By. XPATH,'//*[@id="fallback_block"]/div/div/h4[2]/a')) < 1:
                 time.sleep(1)
-            time.sleep(3)
+            time.sleep(1)
             driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div/section/div/div/div/div[3]/div/div/h4[2]'
                                           '/a').click()
-            # Enviar mensagem
-            time.sleep(25)
-            if len(driver.find_elements(By.XPATH,
-                                        '//*[@id="app"]/div/span[2]/div/span/div/div/div/div/div/div[1]')) == 1:
 
+            while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img')) < 1:
+                time.sleep(1)
+
+            print('whats carregado')
+
+            time.sleep(4)
+
+            if len(driver.find_elements(By.XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]'
+                                          '/div/div[2]/div[2]/button/span')) != 1:
+
+
+                while len(driver.find_elements(By.XPATH, '/html/body/div[1]/div/span[2]/div/span/div/div/div/div/div/div'
+                                                  '[1]'))  < 1 :
+                    time.sleep(1)
+
+                time.sleep(1)
                 print('Número inválido: {}'.format(numero))
-
                 situacao = 'Número Inválido.'
                 self.numero_situacao.append(numero)
                 self.situacao.append(situacao)
-                time.sleep(3)
                 continue
 
-            while len(
-                    driver.find_elements(By.XPATH, '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]')) < 1:
-                time.sleep(1)
-            time.sleep(1)
+
+            time.sleep(11)
             driver.find_element(By. XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]'
                                           '/div/div[2]/div[2]/button/span').click()
+
             print(f'Mensagem enviada para {numero}')
             situacao = 'Mensagem Enviada.'
             self.numero_situacao.append(numero)
             self.situacao.append(situacao)
-            time.sleep(6)
+            time.sleep(5)
 
     def pegar_situacao(self):
         return self.situacao
@@ -79,7 +88,7 @@ class Navegador:
 if '__main__' == __name__:
 
     a= Navegador()
-    a.enviar_mensagens(['31973093105','31985704347','23547',], 'teste')
+    a.enviar_mensagens(['23547','31973093105'], 'teste')
 
 
 

@@ -7,13 +7,12 @@ from tkinter.filedialog import askopenfilename
 from readsheets import LendoPlanilha
 from tkinter.simpledialog import askstring
 
-
 driver = Navegador()
 detalhes = Details()
 df = LendoPlanilha()
 
 
-class EnvioDeWhatsapp():
+class EnvioDeWhatsapp:
     def __init__(self):
         self.window = Tk()
         self.window.geometry("720x439")
@@ -95,8 +94,7 @@ chamado "Como me usar"\n
     def enviar_mensagem(self):
         driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
         df.salvar_planilha(self.numeros, driver.pegar_situacao())
-        self.numeros.clear()
-
+        
     def valores_combobox(self, *args):
         self.combobox_var.trace('w', self.valores_combobox)
         if 'Contato(s)' in self.combobox_opcoes.get():
@@ -153,13 +151,15 @@ chamado "Como me usar"\n
             coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?\n'
                                          'É de extrema importância que o nome esteja correto.')
             if coluna:
+                self.numeros = df.ler_planilha(arquivo, coluna)
+
                 arquivo_selecionado = Label(text=arquivo,
                                      bg='#A4FFC8', fg='black', font='-weight bold -size 7')
                 arquivo_selecionado.place(x=365, y=175)
                 messagebox.showinfo(title='Carregando planilha', message=f'Coluna: {coluna}.\nA planilha foi carregada com sucesso!!\nEscreva sua'
                                                                          ' mensagem no campo "Mensagem" e clique em "Enviar"')
-                self.numeros = df.ler_planilha(arquivo, coluna)
-                print(self.numeros)
+
+
             else:
                 messagebox.showerror(title='ERRO DE COLUNA', message='Nenhuma coluna selecionada.')
         else:
