@@ -85,7 +85,7 @@ jefferson.dev.contato@gmail.com
 --------------------------------------------------------------
 Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na pasta deste aplicativo.
 ↳----------------------------------------------------------↲''', bg='#B3F0E5', fg='black',
-                                                                    font='-weight bold -size 8', )
+                         font='-weight bold -size 8', )
         texto_aviso.place(x=55, y=58)
 
     def enviar_mensagem(self):
@@ -136,7 +136,7 @@ Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na
                 self.numeros.append(numeros)
         else:
             alerta = messagebox.showerror(title='NENHUM NÚMERO ENCONTRADO', message='Digite algum número')
-
+        print(self.numeros)
     def limpar_opcoes(self):
         label_limpar = Label(height=7, width=45, bg='#A4FFC8')
         label_limpar.place(x=360, y=127)
@@ -147,6 +147,12 @@ Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na
             coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?')
             if coluna:
                 self.numeros = df.ler_planilha(arquivo, coluna)
+
+                # for numero in numeros:
+                #     numero = str(numero).strip()
+                #     self.numeros.append(numero)
+                # print (self.numeros)
+
                 arquivo_selecionado = Label(text=arquivo, bg='#A4FFC8', fg='black', font='-weight bold -size 7')
                 arquivo_selecionado.place(x=365, y=175)
                 messagebox.showinfo(title='CARREGANDO PLANILHA', message=f'Coluna: {coluna}.\nA planilha foi carregada '

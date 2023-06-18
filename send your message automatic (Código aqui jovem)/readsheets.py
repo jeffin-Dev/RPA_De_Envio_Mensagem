@@ -14,9 +14,7 @@ class LendoPlanilha:
         self.colunas = self.planilha.columns
         self.verificar_colunas(coluna)
         numeros = df[coluna]
-        print(numeros)
-        print (self.colunas)
-        return numeros
+        return list(numeros)
 
     def salvar_planilha(self, numeros, situacao, mensagem):
         novo_df = pd.DataFrame()

@@ -52,6 +52,7 @@ class Navegador:
                                                     '/html/body/div[1]/div/span[2]/div/span/div/div/div/div/div/div[1]').text:
                         print(f'{numero} inválido')
                         break
+
                 time.sleep(3)
                 driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div'
                                              '/span[2]/div/div[2]/div[2]/button').click()
@@ -59,7 +60,7 @@ class Navegador:
                 situacao = 'Mensagem Enviada.'
                 self.numero_situacao.append(numero)
                 self.situacao.append(situacao)
-                time.sleep(2)
+                time.sleep(3)
             except:
                 print(f'{numero} não existe')
                 situacao = 'Número Inválido.'
@@ -79,5 +80,6 @@ if '__main__' == __name__:
 
     a= Navegador()
     a.enviar_mensagens(['31973093105','23547'], 'teste')
+
 
 
