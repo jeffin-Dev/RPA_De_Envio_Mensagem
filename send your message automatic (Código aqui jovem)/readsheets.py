@@ -9,7 +9,7 @@ class LendoPlanilha:
         self.colunas = None
 
     def ler_planilha(self, local_planilha, coluna):
-        df = pd.read_excel(local_planilha, sep=';', encoding='latin-1')
+        df = pd.read_excel(local_planilha)
         self.planilha = df
         self.colunas = self.planilha.columns
         self.verificar_colunas(coluna)
