@@ -17,23 +17,23 @@ class EnvioDeWhatsapp:
         self.window = Tk()
         self.window.geometry("720x439")
         self.window.title('Robô do ZAP')
-        self.window.configure(bg = "#b3f0d3")
+        self.window.configure(bg="#b3f0d3")
         detalhes.fixar_window_centro(self.window)
         self.numeros = []
         self.canvas = Canvas(
             self.window,
-            bg = "#b3f0d3",
-            height = 439,
-            width = 720,
-            bd = 0,
-            highlightthickness = 0,
-            relief = "ridge")
+            bg="#b3f0d3",
+            height=439,
+            width=720,
+            bd=0,
+            highlightthickness=0,
+            relief="ridge")
         self.canvas.place(x = 0, y = 0)
         self.background_img = PhotoImage(file = f"background.png")
         self.background = self.canvas.create_image(
             361.5, 219.5,
             image=self.background_img)
-        self.opcoes= ['Contato(s)','Upload de planilha']
+        self.opcoes = ['Contato(s)', 'Upload de planilha']
         # Criando combobox opcoes
         self.combobox_var = StringVar()
         self.combobox_opcoes = ttk.Combobox(values=self.opcoes, textvariable=self.combobox_var,
@@ -41,7 +41,7 @@ class EnvioDeWhatsapp:
         self.combobox_opcoes.place(x=465, y=100)
         self.valores_combobox()
         # Caixa de text mensagem
-        self.img_caixa_texto = PhotoImage(file = f"img_textBox0.png")
+        self.img_caixa_texto = PhotoImage(file=f"img_textBox0.png")
         self.img_caixa_texto = self.canvas.create_image(
             541.5, 310.5,
             image = self.img_caixa_texto)
@@ -66,41 +66,36 @@ class EnvioDeWhatsapp:
             x = 484, y = 382,
             width = 116,
             height = 37)
-        self.botao_fechar = Button(text='Encerrar', bg= "#62D975", width=6, anchor='n',
+        self.botao_fechar = Button(text='Encerrar', bg="#62D975", width=6, anchor='n',
                                    command=self.fechar_aplicacao)
         self.botao_fechar.place(x=657, y=407)
-        self.papelpreto = Label(text='',bg='black', height=14,width=36)
-        self.papelpreto.place(x= 53, y= 56)
-        self.texto_aviso = Label(text='''RECADOS IMPORTANTES
+        self.papelpreto = Label(text='', bg='black', height=14, width=36)
+        self.papelpreto.place(x=53, y=56)
+        self.texto_aviso = Label(text='''
+RECADOS IMPORTANTES
 --------------------------------------------------------------
-O Whatsaap tem api própia, esse sistema foi
-feito
-para meios didádicos e para estudos.
-Não envie +50 mensagens por dia. 
-Use por sua conta e risco.
-
-Sistema feito por Jefferson Roberto.
-Todos os direitos reservados.
+O Whatsaap tem api própia, esse sistema foi\nfeito para\nmeios didádicos e para estudos.\nNão envie +50 mensagens por dia. 
+Use por sua conta e risco.\nSistema feito por Jefferson Roberto.\nTodos os direitos reservados.
 jefferson.dev.contato@gmail.com
 --------------------------------------------------------------
-Para saber como usar, acesse o documento
-chamado "Como me usar"\n
-↳----------------------------------------------------------↲''', bg='#B3F0E5',
-                                 fg='black', font='-weight bold -size 8',)
+Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na pasta deste aplicativo.
+↳----------------------------------------------------------↲''', bg='#B3F0E5', fg='black', font='-weight bold -size 8',)
         self.texto_aviso.place(x=55, y=58)
         self.window.resizable(False, False)
         self.window.mainloop()
 
     def enviar_mensagem(self):
         driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
-        df.salvar_planilha(self.numeros, driver.pegar_situacao())
-        
+        df.salvar_planilha(self.numeros, driver.pegar_situacao(), self.mensagem_para_enviar.get('1.0', END))
+        messagebox.showinfo(title='Planilha Gerada', message='Planilha gerada na área de trabalho com sucesso.')
+        self.numeros = self.numeros.clear()
+
     def valores_combobox(self, *args):
         self.combobox_var.trace('w', self.valores_combobox)
         if 'Contato(s)' in self.combobox_opcoes.get():
             self.limpar_opcoes()
             label_numeros = Label(text='Escreva o(s) número(os) abaixo.', bg='#A4FFC8', fg='black',
-                                 font='-weight bold -size 9')
+                                  font='-weight bold -size 9')
             label_numeros.place(x=445,
                                 y=122)
             self.entrada_numero = Text(height=1, width=29)
@@ -112,62 +107,55 @@ chamado "Como me usar"\n
             separador_labol = Label(text='Separe-os com VÍRGULA', width=30, anchor='w',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 9')
             separador_labol.place(x=465, y=170)
-        elif 'Upload de planilha' in self.combobox_opcoes.get():
+        if 'Upload de planilha' in self.combobox_opcoes.get():
             self.limpar_opcoes()
             arquivo = Label(text='Nenhum arquivo selecionado.',
                                     bg='#A4FFC8', fg='black', font='-weight bold -size 7')
             arquivo.place(x=365, y=175)
-            butao_upload= Button(text='Carregar Planilha',
-                                    bg='#62D975', fg='black', font='-weight bold -size 9', command= self.selecionar_arquivo)
+            butao_upload= Button(text='Carregar Planilha', bg='#62D975', fg='black', font='-weight bold -size 9',
+                                 command=self.selecionar_arquivo)
             butao_upload.place(x=486,
                                y=132)
 
     def carregar_numeros(self):
-        self.numeros_label = Label(text='',bg='#B3F0E5',
+        self.numeros_label = Label(text='', bg='#B3F0E5',
                                       font='-weight bold -size 8')
         self.numeros_label.place(x=32,
                             y=10)
         if '9' in self.entrada_numero.get('1.0', END):
             numeros_cru = self.entrada_numero.get('1.0', END).strip(' ')
             numeros_list = numeros_cru.split(',')
-            qtd = 3
-            mensagem_n_carregador = messagebox.showinfo(title='CARREGANDO NÚMEROS',
+            mensagem_n_carregador = messagebox.showinfo(title='NÚMEROS CARREGADOS',
                                                         message='Os números foram carregados com sucesso!\nEscreva a mensagem e envie.')
             for numeros in numeros_list:
                 numeros = numeros.strip()
                 self.numeros.append(numeros)
         else:
-            alerta = messagebox.showerror(title='Nenhum número encontrado', message='Digite algum número')
+            alerta = messagebox.showerror(title='NENHUM NÚMERO ENCONTRADO', message='Digite algum número')
 
     def limpar_opcoes(self):
         label_limpar = Label(height=7, width=45, bg='#A4FFC8')
-        label_limpar.place(x=360,
-                            y=127)
+        label_limpar.place(x=360, y=127)
 
     def selecionar_arquivo(self):
         arquivo = askopenfilename(title='Selecionar planilha')
-
         if arquivo:
-            coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?\n'
-                                         'É de extrema importância que o nome esteja correto.')
+            coluna = askstring('Coluna', 'Qual o nome da coluna que os números se encontra?')
             if coluna:
                 self.numeros = df.ler_planilha(arquivo, coluna)
-
-                arquivo_selecionado = Label(text=arquivo,
-                                     bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+                arquivo_selecionado = Label(text=arquivo, bg='#A4FFC8', fg='black', font='-weight bold -size 7')
                 arquivo_selecionado.place(x=365, y=175)
-                messagebox.showinfo(title='Carregando planilha', message=f'Coluna: {coluna}.\nA planilha foi carregada com sucesso!!\nEscreva sua'
-                                                                         ' mensagem no campo "Mensagem" e clique em "Enviar"')
-
-
+                messagebox.showinfo(title='CARREGANDO PLANILHA', message=f'Coluna: {coluna}.\nA planilha foi carregada '
+                                                                         f'com sucesso!! Escreva a mensagem no campo '
+                                                                         f'"Mensagem" e envie')
             else:
                 messagebox.showerror(title='ERRO DE COLUNA', message='Nenhuma coluna selecionada.')
         else:
             label_arquivo_n_selecionado = Label(text='Nenhum arquivo selecionado', width=50, anchor='w',
-                                 bg='#A4FFC8', fg='black', font='-weight bold -size 7')
+                                                      bg='#A4FFC8', fg='black', font='-weight bold -size 7')
             label_arquivo_n_selecionado.place(x=365, y=175)
             label_inf = Label(text='', bg='#A4FFC8',
-                              fg='black', font='-weight bold -size 7', anchor='w', width=55)
+                                fg='black', font='-weight bold -size 7', anchor='w', width=55)
             label_inf.place(x=365, y=200)
 
     def fechar_aplicacao(self):

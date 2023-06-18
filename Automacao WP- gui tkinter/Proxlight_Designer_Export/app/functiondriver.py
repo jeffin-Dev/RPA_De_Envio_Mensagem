@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 import urllib.parse
 
+
 class Navegador:
     def __init__(self):
         self.numero = None
@@ -18,68 +19,57 @@ class Navegador:
         driver = webdriver.Chrome(service=servico)
         texto = urllib.parse.quote(mensagem)
         # driver.get(f'https://web.whatsapp.com/')
-        # # esperar gerar qrcode
         # while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[3]/div[1]/div/div/div[2]/div/canvas')) < 1:
         #     time.sleep(1)
-        # # esperar carregar whats
         # time.sleep(1)
         # while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img')) < 1:
         #     time.sleep(1)
-        # print('WhatsApp logado e carregado com sucesso!...')
         # time.sleep(8)
         for numero in numeros:
-            print ('Enviando para o número: {}'.format(numero))
-
             # abrir cvs com a pessoa
             print(f'Abrindo conversa com {numero}')
             driver.get(f'https://api.whatsapp.com/send/?phone=55{numero}&text={texto}&type=phone_number&app_absent=0')
             time.sleep(2)
-
             # clicar em inciar conversa
             while len(driver.find_elements(By.XPATH, '//*[@id="action-button"]')) < 1:
                 time.sleep(1)
-            time.sleep(3)
+            time.sleep(1.5)
             driver.find_element(By.XPATH, '//*[@id="action-button"]').click()
-
             # abrir whats web
             while len(driver.find_elements(By. XPATH,'//*[@id="fallback_block"]/div/div/h4[2]/a')) < 1:
                 time.sleep(1)
-            time.sleep(1)
+            time.sleep(1.5)
             driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div/section/div/div/div/div[3]/div/div/h4[2]'
                                           '/a').click()
-
             while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img')) < 1:
                 time.sleep(1)
 
-            print('whats carregado')
-
-            time.sleep(4)
-
-            if len(driver.find_elements(By.XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]'
-                                          '/div/div[2]/div[2]/button/span')) != 1:
-
-
-                while len(driver.find_elements(By.XPATH, '/html/body/div[1]/div/span[2]/div/span/div/div/div/div/div/div'
-                                                  '[1]'))  < 1 :
-                    time.sleep(1)
-
-                time.sleep(1)
-                print('Número inválido: {}'.format(numero))
+            time.sleep(5)
+            try:
+                while len(driver.find_elements(By.XPATH, '/html/body/div[1]/div'
+                                                         '/span[2]/div/span/div/div/div/div/div/div[1]')) > 0:
+                    if 'url' in driver.find_element(By.XPATH,
+                                                    '/html/body/div[1]/div/span[2]/div/span/div/div/div/div/div/div[1]').text:
+                        print(f'{numero} inválido')
+                        break
+                time.sleep(2)
+                driver.find_element(By.XPATH,
+                                    '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button').click()
+                print('Mensagem enviada para {}'.format(numero))
+                situacao = 'Mensagem Enviada.'
+                self.numero_situacao.append(numero)
+                self.situacao.append(situacao)
+                time.sleep(2)
+            except:
+                print(f'{numero} não existe')
                 situacao = 'Número Inválido.'
                 self.numero_situacao.append(numero)
                 self.situacao.append(situacao)
-                continue
+                time.sleep(2)
+            finally:
+                print('Proximo número')
+                time.sleep(1)
 
-
-            time.sleep(11)
-            driver.find_element(By. XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]'
-                                          '/div/div[2]/div[2]/button/span').click()
-
-            print(f'Mensagem enviada para {numero}')
-            situacao = 'Mensagem Enviada.'
-            self.numero_situacao.append(numero)
-            self.situacao.append(situacao)
-            time.sleep(5)
 
     def pegar_situacao(self):
         return self.situacao
@@ -88,7 +78,7 @@ class Navegador:
 if '__main__' == __name__:
 
     a= Navegador()
-    a.enviar_mensagens(['23547','31973093105'], 'teste')
+    a.enviar_mensagens(['31973093105','23547'], 'teste')
 
 
 

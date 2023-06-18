@@ -1,6 +1,3 @@
-from tkinter import ttk
-from tkinter import Tk
-
 class Details:
 
     def fixar_window_centro(self, janela):
