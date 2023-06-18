@@ -71,7 +71,12 @@ class EnvioDeWhatsapp:
         self.botao_fechar.place(x=657, y=407)
         self.papelpreto = Label(text='', bg='black', height=14, width=36)
         self.papelpreto.place(x=53, y=56)
-        self.texto_aviso = Label(text='''
+        self.recados_importantes()
+        self.window.resizable(False, False)
+        self.window.mainloop()
+
+    def recados_importantes(self):
+        texto_aviso = Label(text='''
 RECADOS IMPORTANTES
 --------------------------------------------------------------
 O Whatsaap tem api própia, esse sistema foi\nfeito para\nmeios didádicos e para estudos.\nNão envie +50 mensagens por dia. 
@@ -79,10 +84,9 @@ Use por sua conta e risco.\nSistema feito por Jefferson Roberto.\nTodos os direi
 jefferson.dev.contato@gmail.com
 --------------------------------------------------------------
 Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na pasta deste aplicativo.
-↳----------------------------------------------------------↲''', bg='#B3F0E5', fg='black', font='-weight bold -size 8',)
-        self.texto_aviso.place(x=55, y=58)
-        self.window.resizable(False, False)
-        self.window.mainloop()
+↳----------------------------------------------------------↲''', bg='#B3F0E5', fg='black',
+                                                                    font='-weight bold -size 8', )
+        texto_aviso.place(x=55, y=58)
 
     def enviar_mensagem(self):
         driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
