@@ -44,7 +44,7 @@ class Navegador:
             while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img')) < 1:
                 time.sleep(1)
 
-            time.sleep(5)
+            time.sleep(2)
             try:
                 while len(driver.find_elements(By.XPATH, '/html/body/div[1]/div'
                                                          '/span[2]/div/span/div/div/div/div/div/div[1]')) > 0:
@@ -52,9 +52,9 @@ class Navegador:
                                                     '/html/body/div[1]/div/span[2]/div/span/div/div/div/div/div/div[1]').text:
                         print(f'{numero} inválido')
                         break
-                time.sleep(2)
-                driver.find_element(By.XPATH,
-                                    '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button').click()
+                time.sleep(3)
+                driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div'
+                                             '/span[2]/div/div[2]/div[2]/button').click()
                 print('Mensagem enviada para {}'.format(numero))
                 situacao = 'Mensagem Enviada.'
                 self.numero_situacao.append(numero)
@@ -68,7 +68,7 @@ class Navegador:
                 time.sleep(2)
             finally:
                 print('Proximo número')
-                time.sleep(1)
+                time.sleep(2)
 
 
     def pegar_situacao(self):
@@ -79,6 +79,5 @@ if '__main__' == __name__:
 
     a= Navegador()
     a.enviar_mensagens(['31973093105','23547'], 'teste')
-
 
 
