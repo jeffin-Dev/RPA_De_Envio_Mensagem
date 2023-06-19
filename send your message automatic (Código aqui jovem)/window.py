@@ -91,7 +91,8 @@ Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na
     def enviar_mensagem(self):
         driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
         df.salvar_planilha(self.numeros, driver.pegar_situacao(), self.mensagem_para_enviar.get('1.0', END))
-        messagebox.showinfo(title='Planilha Gerada', message='Planilha gerada na área de trabalho com sucesso.')
+        messagebox.showinfo(title='Planilha Gerada', message='Planilha gerada com sucesso.')
+        print(self.numeros)
         self.numeros = self.numeros.clear()
 
     def valores_combobox(self, *args):
@@ -155,8 +156,8 @@ Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na
 
                 arquivo_selecionado = Label(text=arquivo, bg='#A4FFC8', fg='black', font='-weight bold -size 7')
                 arquivo_selecionado.place(x=365, y=175)
-                messagebox.showinfo(title='CARREGANDO PLANILHA', message=f'Coluna: {coluna}.\nA planilha foi carregada '
-                                                                         f'com sucesso!! Escreva a mensagem no campo '
+                messagebox.showinfo(title='CARREGANDO PLANILHA', message=f'A planilha foi carregada com sucesso.\n'
+                                                                         f'Escreva a mensagem no campo '
                                                                          f'"Mensagem" e envie')
             else:
                 messagebox.showerror(title='ERRO DE COLUNA', message='Nenhuma coluna selecionada.')
