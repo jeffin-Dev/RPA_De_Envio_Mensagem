@@ -1,6 +1,6 @@
  Projeto de automatização envio de mensagem pelo whatsapp 
 
-in pt/br:
+Em pt/br:
 
 SISTEMA DESENVOLVIDO APENAS PARA QUEM TEM O NAVEGADOR GOOGLE CHROME
 
@@ -15,7 +15,7 @@ SISTEMA DESENVOLVIDO APENAS PARA QUEM TEM O NAVEGADOR GOOGLE CHROME
    
 ----------------------------------------------//**//----------------------------------------------
 
-in english:
+In english:
 
 SYSTEM DEVELOPED ONLY FOR THOSE WHO HAVE THE GOOGLE CHROME BROWSER
 
