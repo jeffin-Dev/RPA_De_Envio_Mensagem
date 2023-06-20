@@ -6,16 +6,19 @@ from datails import Details
 from tkinter.filedialog import askopenfilename
 from readsheets import LendoPlanilha
 from tkinter.simpledialog import askstring
+import os
 
 driver = Navegador()
 detalhes = Details()
 df = LendoPlanilha()
-
+caminho = os.getcwd()
 
 class EnvioDeWhatsapp:
     def __init__(self):
         self.window = Tk()
         self.window.geometry("720x439")
+        self.Photo = PhotoImage(file = caminho + '\img\icon.png')
+        self.window.iconphoto(False, self.Photo)
         self.window.title('Robô do ZAP')
         self.window.configure(bg="#b3f0d3")
         detalhes.fixar_window_centro(self.window)
@@ -29,7 +32,7 @@ class EnvioDeWhatsapp:
             highlightthickness=0,
             relief="ridge")
         self.canvas.place(x = 0, y = 0)
-        self.background_img = PhotoImage(file = f"background.png")
+        self.background_img = PhotoImage(file = caminho + r'\img\background.png')
         self.background = self.canvas.create_image(
             361.5, 219.5,
             image=self.background_img)
@@ -41,7 +44,7 @@ class EnvioDeWhatsapp:
         self.combobox_opcoes.place(x=465, y=100)
         self.valores_combobox()
         # Caixa de text mensagem
-        self.img_caixa_texto = PhotoImage(file=f"img_textBox0.png")
+        self.img_caixa_texto = PhotoImage(file=caminho + r"\img\img_textBox0.png")
         self.img_caixa_texto = self.canvas.create_image(
             541.5, 310.5,
             image = self.img_caixa_texto)
@@ -54,7 +57,7 @@ class EnvioDeWhatsapp:
             width = 251,
             height = 111)
         # Botao "Enviar'
-        self.img_botao = PhotoImage(file = f"img0.png")
+        self.img_botao = PhotoImage(file = caminho + r"\img\img0.png")
         self.botao_enviar = Button(
             image = self.img_botao,
             command= self.enviar_mensagem,
