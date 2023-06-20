@@ -29,32 +29,35 @@ class Navegador:
             # abrir cvs com a pessoa
             print(f'Abrindo conversa com {numero}')
             driver.get(f'https://api.whatsapp.com/send/?phone=55{numero}&text={texto}&type=phone_number&app_absent=0')
-            time.sleep(2)
+            time.sleep(3)
             # clicar em inciar conversa
-            while len(driver.find_elements(By.XPATH, '//*[@id="action-button"]')) < 1:
+            botao_iniciar_conversa = '/html/body/div[1]/div[1]/div[2]/div/section/div/div/div/div[2]/div[1]/a'
+            while len(driver.find_elements(By.XPATH, botao_iniciar_conversa)) < 1:
                 time.sleep(1)
             time.sleep(2)
-            driver.find_element(By.XPATH, '//*[@id="action-button"]').click()
+            driver.find_element(By.XPATH, botao_iniciar_conversa).click()
             # abrir whats web
-            while len(driver.find_elements(By. XPATH,'//*[@id="fallback_block"]/div/div/h4[2]/a')) < 1:
+            botao_abrir_whatsaap_web = '/html/body/div[1]/div[1]/div[2]/div/section/div/div/div/div[3]/div/div/h4[2]/a'
+            while len(driver.find_elements(By. XPATH, botao_abrir_whatsaap_web)) < 1:
                 time.sleep(1)
             time.sleep(2)
-            driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/div/section/div/div/div/div[3]/div/div/h4[2]'
-                                          '/a').click()
-            while len(driver.find_elements(By.XPATH, '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img')) < 1:
+            driver.find_element(By.XPATH, botao_abrir_whatsaap_web).click()
+            whatsaap_aberto = '//*[@id="app"]/div/div/div[4]/header/div[1]/div/img'
+            while len(driver.find_elements(By.XPATH, whatsaap_aberto)) < 1:
                 time.sleep(1)
             time.sleep(2)
             try:
-                while len(driver.find_elements(By.XPATH, '/html/body/div[1]/div/span[2]/div/span/div/div/div/div')) > 0:
+                pop_up_carregando = '/html/body/div[1]/div/span[2]/div/span/div/div/div/div'
+                while len(driver.find_elements(By.XPATH, pop_up_carregando)) > 0:
                     print('Carregando chat')
-                    if 'url' in driver.find_element(By. XPATH,'/html/body/div[1]/div/span[2]/div/span/div/div/div/div'
-                                                            '/div/div[1]').text:
+                    pop_up_numero_invalido = '/html/body/div[1]/div/span[2]/div/span/div/div/div/div/div/div[1]'
+                    if 'url' in driver.find_element(By. XPATH,pop_up_numero_invalido).text:
                         time.sleep(1)
                         break
                     time.sleep(1)
                 time.sleep(2)
-                driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div'
-                                             '/span[2]/div/div[2]/div[2]/button').click()
+                botao_enviar = '/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button'
+                driver.find_element(By.XPATH,botao_enviar).click()
                 print('Mensagem enviada para {}'.format(numero))
                 situacao = 'Mensagem Enviada.'
                 self.numero_situacao.append(numero)
@@ -68,7 +71,6 @@ class Navegador:
                 time.sleep(2)
             finally:
                 time.sleep(1)
-
 
     def pegar_situacao(self):
         return self.situacao

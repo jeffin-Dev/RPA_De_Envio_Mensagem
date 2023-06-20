@@ -94,7 +94,7 @@ Para saber como usar, acesse o documento\nchamado "Como me usar"\nSe encontra na
     def enviar_mensagem(self):
         driver.enviar_mensagens(self.numeros, self.mensagem_para_enviar.get('1.0', END))
         df.salvar_planilha(self.numeros, driver.pegar_situacao(), self.mensagem_para_enviar.get('1.0', END))
-        messagebox.showinfo(title='Planilha Gerada', message='Planilha gerada com sucesso.')
+        messagebox.showinfo(title='Planilha Gerada', message='Planilha foi gerada com sucesso.')
         print(self.numeros)
         self.numeros = self.numeros.clear()
 
