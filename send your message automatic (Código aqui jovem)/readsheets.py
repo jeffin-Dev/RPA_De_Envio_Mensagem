@@ -1,6 +1,5 @@
 import pandas as pd
 from tkinter import messagebox
-from tkinter.simpledialog import askstring
 import os
 
 class LendoPlanilha:
@@ -23,7 +22,7 @@ class LendoPlanilha:
         novo_df['Situação'] = situacao
         novo_df['Mensagem'] = mensagem
         caminho_atual = os.getcwd()
-        novo_df.to_excel(caminho_atual + r'\Planilha.xlsx', index=False)
+        novo_df.to_excel('Planilha.xlsx', index=False)
         print('Planilha gerada')
 
     def verificar_colunas(self, nome_da_coluna):
